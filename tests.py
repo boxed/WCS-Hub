@@ -1,9 +1,9 @@
-from unittest import TestCase
+from unittest import TestCase, main as run_tests
 from relative_placement import *
 
 class Test(TestCase):
     def check_data(self, data):
-        self.assertEquals([x[-1] for x in calculate_scores(data)], range(1, len(data)))
+        self.assertEquals([x[-1][-1] for x in calculate_scores(data)], range(1, len(data)+1))
 
     def test_CDS_2011_int_jj_finals(self):
         data = [
@@ -33,6 +33,19 @@ class Test(TestCase):
         ]
         self.check_data(data)
 
+    def test_jose_de_la_mancha(self):
+        data = [
+            [('Couple A'),	    (4,	1,	1,	2,	1),	1],
+            [('Couple B'),	    (2,	3,	5,	4,	4),	2],
+            [('Couple C'),	    (1,	5,	4,	1,	5),	3],
+            [('Couple D'),	    (5,	6,	3,	3,	8),	4],
+            [('Couple E'),	    (7,	2,	2,	6,	7),	5],
+            [('Couple F'),	    (6,	8,	8,	5,	2),	6],
+            [('Couple G'),	    (8,	4,	6,	8,	6),	7],
+            [('Couple H'),	    (3,	7,	7,	7,	3),	8],
+        ]
+        self.check_data(data)
+
     def test_example_from_WSDC_docs(self):
         data = [
             [('couple 1'), (1, 1, 3, 2, 3), 1],
@@ -43,3 +56,6 @@ class Test(TestCase):
             [('couple 6'), (3, 3, 6, 4, 1), 2],
         ]
         self.check_data(data)
+
+if __name__ == '__main__':
+    run_tests()
