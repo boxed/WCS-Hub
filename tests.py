@@ -3,7 +3,9 @@ from relative_placement import *
 
 class Test(TestCase):
     def check_data(self, data):
-        self.assertEquals([x[-1][-1] for x in calculate_scores(data)], range(1, len(data)+1))
+        # print_final_tabulation(calculate_scores(data))
+        scores = calculate_scores(data)[:12] # We only care that the first 12 are correct, functionally the rest are split last place
+        self.assertEquals([x[-1][-1] for x in scores], range(1, len(scores)+1))
 
     def test_CDS_2011_int_jj_finals(self):
         data = [
@@ -54,6 +56,26 @@ class Test(TestCase):
             [('couple 4'), (4, 2, 5, 6, 6), 6],
             [('couple 5'), (5, 6, 2, 3, 4), 5],
             [('couple 6'), (3, 3, 6, 4, 1), 2],
+        ]
+        self.check_data(data)
+
+    def test_only_rank_top_12(self):
+        data = [
+            [('couple 1'),  (   1,    1,    1,    1,    1),  1],
+            [('couple 2'),  (   2,    2,    2,    2,    2),  2],
+            [('couple 3'),  (   3,    3,    3,    3,    3),  3],
+            [('couple 4'),  (   4,    4,    4,    4,    4),  4],
+            [('couple 5'),  (   5, None,    5,    5,    5),  5],
+            [('couple 6'),  (   6,    6,    6,    6,    6),  6],
+            [('couple 7'),  (   7,    7,    7,    7,    7),  7],
+            [('couple 8'),  (   8,    8,    8,    8,    8),  8],
+            [('couple 9'),  (   9,    9,    9,    9,    9),  9],
+            [('couple 10'), (  10, None,   10,   10, None), 10],
+            [('couple 11'), (  11,    5, None,   11,   11), 11],
+            [('couple 12'), (  12, None, None,   12,   12), 12],
+            [('couple 13'), (  13, None,   13, None, None), 13],
+            [('couple 14'), (None,   10,   11, None, None), 14],
+            [('couple 15'), (None, None,   12, None,   10), 15],
         ]
         self.check_data(data)
 

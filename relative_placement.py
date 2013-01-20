@@ -8,6 +8,7 @@ from math import ceil
 def validate_scores(data):
     judges_data = {}
     for row in data:
+        row[1] = [cell or len(data)+1 for cell in row[1]]
         for i, item in enumerate(row[1]):
             if item:
                 judge_data = judges_data.get(i, [])
