@@ -6,43 +6,71 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
         <script src="wcs.js"></script>
         <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                font-family: 'helvetica neue';
+                font-weight: 200;
+            }
+            h1, h2, h3, h4, th {
+                font-weight: 200;
+            }
             input {
                 width:  30px;
             }
             input.name {
                 width:  100px;
             }
+            #container {
+                min-height: 100%;
+                margin: 15px;
+                margin-bottom: -130px;
+                position: relative;
+            }
+            #footer {
+                padding: 15px;
+                height: 130px;
+                position: relative;
+                background: #e1d6e8;
+            }
         </style>
     </head>
     <body ng-controller="FinalsCtrl">
-        <button ng-click="addJudges()">Add judges</button>
-        <button ng-click="removeJudges()" ng-hide="judges.length == 3">Remove judges</button>
-        <form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nr</th>
-                        <th>Leader</th>
-                        <th>Follower</th>
-                        <th ng-repeat="judge in judges">J{{judge}}</th>
-                        <th>Chief Judge</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="couple in couples">
-                        <td><input ng-model="couple.nr" pattern="\d*"/></td>
-                        <td><input ng-model="couple.leader" class="name"/></td>
-                        <td><input ng-model="couple.follower" class="name"/></td>
-                        <td ng-repeat="judge in judges"><input ng-model="couple.scores[judge]" pattern="\d*"/></td>
-                        <td><input ng-model="couple.chief_judge_score" pattern="\d*"/></td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+        <div id="container">
+            <h1>WCS Finals</h1>
+            <button ng-click="addJudges()">Add judges</button>
+            <button ng-click="removeJudges()" ng-hide="judges.length == 3">Remove judges</button>
+            <form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nr</th>
+                            <th>Leader</th>
+                            <th>Follower</th>
+                            <th ng-repeat="judge in judges">J{{judge}}</th>
+                            <th>Chief Judge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="couple in couples">
+                            <td><input ng-model="couple.nr" pattern="\d*"/></td>
+                            <td><input ng-model="couple.leader" class="name"/></td>
+                            <td><input ng-model="couple.follower" class="name"/></td>
+                            <td ng-repeat="judge in judges"><input ng-model="couple.scores[judge]" pattern="\d*"/></td>
+                            <td><input ng-model="couple.chief_judge_score" pattern="\d*"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
 
-        <div ng-repeat="error in errors">{{error}}</div>
+            <div ng-repeat="error in errors">{{error}}</div>
 
-        <h3>Relative Placement</h3>
-        <pre>{{ placement }}</pre>
+            <h3>Relative Placement</h3>
+            <pre>{{ placement }}</pre>
+        </div>
+
+        <div id="footer">
+            The code for WCS-Hub is available on <a href="https://github.com/boxed/WCS-Hub">Github</a>.
+        </div>
     </body>
 </html>
