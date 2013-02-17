@@ -1,0 +1,8 @@
+A complete WCS event system should have:
+- A way to register online for different comps
+- A way to register on site for different comps
+	- Import from other sources?
+- Computer support for comps
+	- Prelims
+	- Finals
+	- Posting results
