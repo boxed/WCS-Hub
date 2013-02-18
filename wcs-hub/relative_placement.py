@@ -54,7 +54,7 @@ def number_of_votes_and_sum(row, from_placement):
 
 def voting_tabulation(row, places):
     ### 6 continued:... If the sums for two or more couples are identical, then the next placement is added to the previous placements for those tied couples only.
-    return [number_of_votes_and_sum(row, x)+(1.0/row.chief_judge_score if row.chief_judge_score is not None else None,) for x in xrange(1, places)]
+    return [number_of_votes_and_sum(row, x) for x in xrange(1, places)]+[1.0/row.chief_judge_score if row.chief_judge_score is not None else None]
 
 # couple ID, judge placements..., final placement
 def calculate_scores(data):
@@ -72,7 +72,7 @@ def calculate_scores(data):
 def format_final_tabulation(final_result):
     result = []
     for tabulation, couple_scoring in final_result:
-        result.append(''.join(['{:>3} ({:>3})'.format(*x) for x in tabulation]).replace('-', ' ') + '  |  %(name)s' % couple_scoring.__dict__)
+        result.append(''.join(['{:>3} ({:>3})'.format(*x) for x in tabulation[:-1]]).replace('-', ' ') + '  |  %(name)s' % couple_scoring.__dict__)
     return '\n'.join(result)
 
 def print_final_tabulation(final_result):

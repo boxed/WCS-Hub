@@ -90,5 +90,15 @@ class Test(TestCase):
         ]
         self.check_data(data)
 
+    def test_from_greg_skinner(self):
+        data = [
+            CoupleScoring('jason yvonne',   (4, 5, 4), 5, 4),
+            CoupleScoring('kyle sarah',     (5, 4, 5), 4, 5),
+            CoupleScoring('jordan tatiana', (1, 2, 3), 3, 3),
+            CoupleScoring('eric dora',      (2, 3, 1), 2, 2),
+            CoupleScoring('paul catriona',  (3, 1, 2), 1, 1),
+        ]
+        self.check_data(data)
+
 if __name__ == '__main__':
     run_tests()
