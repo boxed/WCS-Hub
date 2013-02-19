@@ -24,8 +24,23 @@
             input.name {
                 width:  100px;
             }
+            .space_above {
+                padding-top: 30px;
+            }
+            #placement table {
+                border-spacing: 0;
+                padding-top: 30px;
+            }
+            #placement td {
+                text-align: center;
+                padding: 0 20px;
+                border-bottom: 1px solid lightgray;
+            }
+            #placement th {
+                border-bottom: 1px solid black;
+            }
             #container {
-                padding: 15px 15px 45px;
+                padding: 15px 15px 75px;
                 position: relative;
             }
             #footer {
@@ -68,8 +83,45 @@
 
             <div ng-repeat="error in errors">{{error}}</div>
 
-            <h3>Relative Placement</h3>
-            <pre>{{ placement }}</pre>
+            <div id="placement" ng-hide="errors">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Place</th>
+                        <th>Nr</th>
+                        <th>Leader</th>
+                        <th>Follower</th>
+                        <th ng-repeat="judge in judges">J{{judge}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="score in scores">
+                        <td>
+                            <ng-pluralize count="$index+1"
+                                          when="{'1': '1st',
+                                                '2': '2nd',
+                                                '3': '3rd',
+                                                'other': '{}th'}">
+                            </ng-pluralize>
+                        </td>
+                        <td>{{score.name.nr}}</td>
+                        <td>{{score.name.leader}}</td>
+                        <td>{{score.name.follower}}</td>
+                        <td ng-repeat="score in score.judges_scores">{{score}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="space_above">
+                <button ng-click="showRP = true" ng-hide="showRP">Show Relative Placement Calculation</button>
+                <button ng-click="showRP = false" ng-show="showRP">Hide Relative Placement Calculation</button>
+            </div>
+
+            <div ng-show="showRP">
+                <h3>Relative Placement Calculation</h3>
+                <pre>{{ tabulation }}</pre>
+            </div>
         </div>
         <div id="footer">
             The code for WCS-Hub is available on <a href="https://github.com/boxed/WCS-Hub">Github</a>.

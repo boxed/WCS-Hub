@@ -19,6 +19,7 @@ function FinalsCtrl($scope, $location, $http) {
     $scope.judges = [
         1, 2, 3
     ];
+    $scope.showRP = false;
     if ($location.path()) {
         var state = angular.fromJson($location.path().slice(1));
         $scope.couples = state.couples;
@@ -37,7 +38,9 @@ function FinalsCtrl($scope, $location, $http) {
             judges: $scope.judges
         }));
         $http.get('/finals/?'+encodeURI(angular.toJson({couples: $scope.couples, judges: $scope.judges}))).success(function(data){
-            $scope.placement = data;
+            data = angular.fromJson(data);
+            $scope.tabulation = data.tabulation;
+            $scope.scores = data.scores;
             $scope.errors = null;
         }).error(function(data){
             $scope.errors = data.errors;

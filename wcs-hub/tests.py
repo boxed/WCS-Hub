@@ -3,7 +3,6 @@ from relative_placement import *
 
 class Test(TestCase):
     def check_data(self, data):
-        # print_final_tabulation(calculate_scores(data))
         scores = calculate_scores(data)[:12] # We only care that the first 12 are correct, functionally the rest are split last place
         self.assertEquals([x[-1].user_data for x in scores], range(1, len(scores)+1))
 

@@ -8,6 +8,11 @@ class CoupleScoring(object):
     def __init__(self, name, judges_scores, chief_judge_score, user_data=None):
         self.name, self.judges_scores, self.chief_judge_score, self.user_data = name, judges_scores, chief_judge_score, user_data
 
+    def __str__(self):
+        if isinstance(self.name, dict):
+            return '{nr:>3}: {leader}, {follower}'.format(**self.name)
+        return str(self.name)
+
 ### 1. In the finals, each Judge must place every couple in rank order (1st place, 2nd place, 3rd place, etc.).
 class InvalidScoresError(Exception):
     def __init__(self, errors):
@@ -72,8 +77,5 @@ def calculate_scores(data):
 def format_final_tabulation(final_result):
     result = []
     for tabulation, couple_scoring in final_result:
-        result.append(''.join(['{:>3} ({:>3})'.format(*x) for x in tabulation[:-1]]).replace('-', ' ') + '  |  %(name)s' % couple_scoring.__dict__)
+        result.append(''.join(['{:>3} ({:>3})'.format(*x) for x in tabulation[:-1]]).replace('-', ' ') + '  |  %s' % couple_scoring)
     return '\n'.join(result)
-
-def print_final_tabulation(final_result):
-    print format_final_tabulation(final_result)
