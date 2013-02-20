@@ -5,53 +5,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
         <script src="wcs.js"></script>
-        <style>
-            html, body {
-                height: 100%;
-                font-family: 'helvetica neue';
-                font-weight: 200;
-                margin: 0;
-            }
-            h1, h2, h3, h4, th {
-                font-weight: 200;
-            }
-            h1 {
-                margin-top: 0;
-            }
-            input {
-                width:  30px;
-            }
-            input.name {
-                width:  100px;
-            }
-            .space_above {
-                padding-top: 30px;
-            }
-            #placement table {
-                border-spacing: 0;
-                padding-top: 30px;
-            }
-            #placement td {
-                text-align: center;
-                padding: 0 20px;
-                border-bottom: 1px solid lightgray;
-            }
-            #placement th {
-                border-bottom: 1px solid black;
-            }
-            #container {
-                padding: 15px 15px 75px;
-                position: relative;
-            }
-            #footer {
-                padding: 15px;
-                height: 20px;
-                position: fixed;
-                width: 100%;
-                bottom: 0;
-                background: #e1d6e8;
-            }
-        </style>
+        <link href="style.css" rel="stylesheet"/>
     </head>
     <body ng-controller="FinalsCtrl">
         <div id="container">
@@ -83,48 +37,50 @@
 
             <div ng-repeat="error in errors">{{error}}</div>
 
-            <div id="placement" ng-hide="errors">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Place</th>
-                        <th>Nr</th>
-                        <th>Leader</th>
-                        <th>Follower</th>
-                        <th ng-repeat="judge in judges">J{{judge}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="score in scores">
-                        <td>
-                            <ng-pluralize count="$index+1"
-                                          when="{'1': '1st',
-                                                '2': '2nd',
-                                                '3': '3rd',
-                                                'other': '{}th'}">
-                            </ng-pluralize>
-                        </td>
-                        <td>{{score.name.nr}}</td>
-                        <td>{{score.name.leader}}</td>
-                        <td>{{score.name.follower}}</td>
-                        <td ng-repeat="score in score.judges_scores">{{score}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div ng-hide="errors" ng-show="scores">
+                <div id="placement" ng-hide="errors">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Place</th>
+                            <th>Nr</th>
+                            <th>Leader</th>
+                            <th>Follower</th>
+                            <th ng-repeat="judge in judges">J{{judge}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="score in scores">
+                            <td>
+                                <ng-pluralize count="$index+1"
+                                              when="{'1': '1st',
+                                                    '2': '2nd',
+                                                    '3': '3rd',
+                                                    'other': '{}th'}">
+                                </ng-pluralize>
+                            </td>
+                            <td>{{score.name.nr}}</td>
+                            <td>{{score.name.leader}}</td>
+                            <td>{{score.name.follower}}</td>
+                            <td ng-repeat="score in score.judges_scores">{{score}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div class="space_above">
-                <button ng-click="showRP = true" ng-hide="showRP">Show Relative Placement Calculation</button>
-                <button ng-click="showRP = false" ng-show="showRP">Hide Relative Placement Calculation</button>
-            </div>
+                <div class="space_above">
+                    <button ng-click="showRP = true" ng-hide="showRP">Show Relative Placement Calculation</button>
+                    <button ng-click="showRP = false" ng-show="showRP">Hide Relative Placement Calculation</button>
+                </div>
 
-            <div ng-show="showRP">
-                <h3>Relative Placement Calculation</h3>
-                <pre>{{ tabulation }}</pre>
+                <div ng-show="showRP">
+                    <h3>Relative Placement Calculation</h3>
+                    <pre>{{ tabulation }}</pre>
+                </div>
             </div>
         </div>
         <div id="footer">
-            The code for WCS-Hub is available on <a href="https://github.com/boxed/WCS-Hub">Github</a>.
+            Powered by WCS-Hub. The source code is available on <a href="https://github.com/boxed/WCS-Hub">Github</a>.
         </div>
     </body>
 </html>

@@ -14,6 +14,9 @@ handlers:
 - url: /wcs.js
   static_files: wcs.js
   upload: wcs.js
+- url: /style.css
+  static_files: style.css
+  upload: style.css
 
 - url: .*
   script: main.app
