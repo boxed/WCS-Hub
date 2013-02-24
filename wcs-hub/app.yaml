@@ -11,12 +11,11 @@ handlers:
 - url: /
   static_files: index.html
   upload: index.html
-- url: /wcs.js
-  static_files: wcs.js
-  upload: wcs.js
-- url: /style.css
-  static_files: style.css
-  upload: style.css
+- url: /create_event/
+  static_files: create_event.html
+  upload: create_event.html
+- url: /static/
+  static_dir: static
 
 - url: .*
   script: main.app

@@ -1,0 +1,47 @@
+<div ng-controller="SignUpCtrl" id="signupctrl">
+    <h1>Register to compete at {{ event.name }}</h1>
+
+    <table>
+        <tr>
+            <td><label for="id_first_name">First name:</label></td><td><input id="id_first_name" ng-model="first_name" type="text"/></td>
+        </tr>
+        <tr>
+            <td><label for="id_last_name">Last name:</label></td><td><input id="id_last_name" ng-model="last_name" type="text"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="id_lead" ng-model="lead_follow" type="radio" value="lead"/> <label for="id_lead">Leader</label>
+                <input id="id_follow" ng-model="lead_follow" type="radio" value="follow"/> <label for="id_follow">Follower</label>
+            </td>
+        </tr>
+
+        <tr><td>&nbsp;</td></tr>
+
+        <tr>
+            <th>J&J</th>
+            <th>Strictly</th>
+        </tr>
+
+        <tr>
+            <td>
+                <span checkbox title="Newcomer" ng-model="jnj_newcomer" ng-show="event.jnj_newcomer"></span>
+                <span checkbox title="Novice" ng-model="jnj_novice" ng-show="event.jnj_novice"></span>
+                <span checkbox title="Intermediate" ng-model="jnj_intermediate" ng-show="event.jnj_intermediate"     ></span>
+                <span checkbox title="Advanced" ng-model="jnj_advanced" ng-show="event.jnj_advanced"></span>
+                <span checkbox title="All Star" ng-model="jnj_all_star" ng-show="event.jnj_all_star"></span>
+            </td>
+            <td>
+                <span checkbox title="Newcomer" ng-model="strictly_newcomer" ng-show="event.strictly_newcomer" ></span>
+                <span checkbox title="Novice" ng-model="strictly_novice" ng-show="event.strictly_novice"></span>
+                <span checkbox title="Intermediate" ng-model="strictly_intermediate" ng-show="event.strictly_intermediate"></span>
+                <span checkbox title="Advanced" ng-model="strictly_advanced" ng-show="event.strictly_advanced"></span>
+                <span checkbox title="All Star" ng-model="strictly_all_star" ng-show="event.strictly_all_star"></span>
+            </td>
+        </tr>
+        <tr>
+    </table>
+
+    <div style="background-image: url('/static/images/striped_background.gif'); opacity: 0.1; width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+
+    </div>
+</div>

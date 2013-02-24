@@ -1,11 +1,20 @@
 A complete WCS event system should have:
-- A way to register online for different comps
-- A way to register on site for different comps
+- Register an event instance online
+    - Set up which competitions are available and the prices for the divisions
+        Live preview of what the sign up form will look like later, both the onsite and online versions?
+    - Publish/registration start date, registration end date
+- Register online for different comps
+- Register on site for different comps
 	- Import from other sources?
+	- iPad: http://jquerymobile.com/demos/1.0a4.1/docs/forms/forms-checkboxes.html
+
+
 - Computer support for comps
 	- Prelims
 	- Finals
 	- Posting results
 
+- Results display page
+    - Different drill down based on event name, year, etc
 
 http://swingdancecouncil.heroku.com/pages/dancer_search_by_fragment.json?term=hovm

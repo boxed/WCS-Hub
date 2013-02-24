@@ -1,0 +1,166 @@
+html, body {
+    height: 100%;
+    font-family: 'helvetica neue', helvetica, sans-serif;
+    font-weight: 200;
+    margin: 0;
+}
+h1, h2, h3, h4, th {
+    font-weight: 200;
+}
+h1 {
+    margin-top: 0;
+}
+input.name {
+    width:  100px;
+}
+.space_above {
+    padding-top: 30px;
+}
+#placement table {
+    border-spacing: 0;
+    padding-top: 30px;
+}
+#placement td {
+    text-align: center;
+    padding: 0 20px;
+    border-bottom: 1px solid lightgray;
+}
+#placement th {
+    border-bottom: 1px solid black;
+}
+.container {
+    padding: 15px 15px 75px;
+    position: relative;
+}
+#footer {
+    padding: 15px;
+    height: 20px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: #e1d6e8;
+}
+
+.button {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid lightgray;
+    background-image: -moz-linear-gradient(top,#fefefe,#eee);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(1,#eee));
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fdfdfd', EndColorStr='#eeeeee')";
+    cursor: pointer;
+    font-size: 80%;
+}
+
+.button.pushed {
+    background: royalblue none;
+}
+
+.checkbox .check {
+    width: 13px;
+    height: 13px;
+    background: #dedede;
+    border-radius: 2px;
+    float: left;
+    margin-right: 4px;
+    margin-top: 2px;
+}
+
+.checkbox .check span {
+    position: relative;
+    bottom: 6px;
+    left: 2px;
+    font-size: 130%;
+}
+
+@font-face {
+    font-family: "metro_icons";
+    src: url(type/filename.eot);
+    src: local("☺"),
+    url("/static/images/metro-icons-fixed-2000-webfont.ttf") format("truetype"),
+    url("/static/images/metro-icons-fixed-2000-webfont.woff") format("woff"),
+    url("type/filename.svg#filename") format("svg");
+}
+
+/* Finals Page */
+#finals_page input {
+    width:  30px;
+}
+
+#preview {
+    right: 20px;
+}
+
+#preview-contents {
+    position: relative;
+}
+
+#signupctrl table td {
+    vertical-align: top;
+}
+
+#signupctrl table td .button {
+    margin-bottom: 4px;
+}
+
+
+/* Create Event Page */
+
+
+/* Calendar */
+.ui-datepicker {
+    background: #EEE;
+    font-size: 90%;
+    position: relative;
+}
+
+.ui-datepicker table, .ui-datepicker .ui-datepicker-header {
+    padding: 6px 10px;
+}
+
+.ui-datepicker-header {
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+    position: absolute;
+    top: 2px;
+    width: 1.8em;
+    height: 1.8em;
+    padding-top: 5px;
+}
+
+.ui-datepicker .ui-datepicker-prev:before {
+    font-family: 'metro_icons';
+    font-size: 20px;
+    content: '\000279';
+}
+
+.ui-datepicker .ui-datepicker-next:before {
+    font-family: 'metro_icons';
+    font-size: 20px;
+    content: '\000277';
+}
+
+.ui-datepicker .ui-datepicker-next {
+    right: 0;
+}
+.ui-datepicker-title {
+    text-align: center;
+    font-size: 110%;
+}
+
+.ui-datepicker .ui-datepicker-next {
+    content: '>';
+}
+
+.ui-datepicker .ui-datepicker-prev {
+    content: '<';
+}
+
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span {
+    visibility: hidden;
+}
+
+.ui-datepicker-calendar td a {
+    text-decoration: none;
+}

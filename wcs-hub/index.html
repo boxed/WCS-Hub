@@ -1,13 +1,13 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="WCSHub">
     <head>
         <title>WCS Finals</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
-        <script src="wcs.js"></script>
-        <link href="style.css" rel="stylesheet"/>
+        <script src="/static/wcs.js"></script>
+        <link href="/static/style.css" rel="stylesheet"/>
     </head>
-    <body ng-controller="FinalsCtrl">
+    <body ng-controller="FinalsCtrl" id="finals_page">
         <div id="container">
             <h1>WCS Finals</h1>
             <button ng-click="addJudges()">Add judges</button>
