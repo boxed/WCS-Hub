@@ -5,7 +5,10 @@ angular.module('WCSHub', []).directive('checkbox', function() {
         scope: {},
         controller: function ($scope, $http, $attrs, $element, $parse) {
             var target = $parse($attrs.ngModel);
-            $scope.title = $attrs.title;
+            if ($attrs.ngTitle) {
+                $scope.title = $parse($attrs.ngTitle)($scope.$parent);
+            }
+
             $scope.checked = target($scope.$parent);
             if ($attrs.ngShow) {
                 $scope.$parent.$watch($attrs.ngShow, function(value) {
@@ -28,16 +31,25 @@ function empty_event() {
     r.date = new Date();
     r.registration_opens = new Date();
     r.registration_closes = new Date();
-    r.jnj_newcomer = false;
-    r.jnj_novice = false;
-    r.jnj_intermediate = false;
-    r.jnj_advanced = false;
-    r.jnj_all_star = false;
-    r.strictly_newcomer = false;
-    r.strictly_novice = false;
-    r.strictly_intermediate = false;
-    r.strictly_advanced = false;
-    r.strictly_all_star = false;
+    function classes() {
+        return [
+            {name: 'Newcomer',     value: false, show: false},
+            {name: 'Novice',       value: false, show: false},
+            {name: 'Intermediate', value: false, show: false},
+            {name: 'Advanced',     value: false, show: false},
+            {name: 'Allstar',      value: false, show: false}
+        ];
+    }
+    r.competitions = {
+        'J&J': classes(),
+        Strictly: classes(),
+        Routines: [
+            {name: 'Classic',  value: false, show: false},
+            {name: 'Showcase', value: false, show: false},
+            {name: 'Teams',    value: false, show: false},
+            {name: 'Cabaret',  value: false, show: false}
+        ]
+    };
     // TODO: other categories: Adv/allstar in J&J and strictly, routines: http://www.usopenswingdc.com/compete.html, pro-am
     return r;
 }

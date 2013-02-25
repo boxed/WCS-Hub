@@ -95,11 +95,11 @@ input.name {
     position: relative;
 }
 
-#signupctrl table td {
+table td {
     vertical-align: top;
 }
 
-#signupctrl table td .button {
+table td .button {
     margin-bottom: 4px;
 }
 

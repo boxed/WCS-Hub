@@ -32,29 +32,15 @@
                 <tr><td colspan="2"><h3>Available competitions</h3></td></tr>
 
                 <tr>
-                    <th>J&J</th>
-                    <th>Strictly</th>
+                    <th ng-repeat="(group, competitions) in event.competitions">
+                        {{ group }}
+                    </th>
                 </tr>
 
                 <tr>
-                    <td><span checkbox title="Newcomer" ng-model="event.jnj_newcomer"></span></td>
-                    <td><span checkbox title="Newcomer" ng-model="event.strictly_newcomer"></span></td>
-                </tr>
-                <tr>
-                    <td><span checkbox title="Novice" ng-model="event.jnj_novice"></span></td>
-                    <td><span checkbox title="Novice" ng-model="event.strictly_novice"></span></td>
-                </tr>
-                <tr>
-                    <td><span checkbox title="Intermediate" ng-model="event.jnj_intermediate"></span></td>
-                    <td><span checkbox title="Intermediate" ng-model="event.strictly_intermediate"></span></td>
-                </tr>
-                <tr>
-                    <td><span checkbox title="Advanced" ng-model="event.jnj_advanced"></span></td>
-                    <td><span checkbox title="Advanced" ng-model="event.strictly_advanced"></span></td>
-                </tr>
-                <tr>
-                    <td><span checkbox title="All Star" ng-model="event.jnj_all_star"></span></td>
-                    <td><span checkbox title="All Star" ng-model="event.strictly_all_star"></span></td>
+                    <td ng-repeat="(group, competitions) in event.competitions">
+                        <span ng-repeat="comp in competitions" checkbox ng-title="comp.name" ng-model="comp.show"></span>
+                    </td>
                 </tr>
             </table>
 

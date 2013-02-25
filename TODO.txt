@@ -6,7 +6,6 @@ A complete WCS event system should have:
 - Register online for different comps
 - Register on site for different comps
 	- Import from other sources?
-	- iPad: http://jquerymobile.com/demos/1.0a4.1/docs/forms/forms-checkboxes.html
 
 
 - Computer support for comps
