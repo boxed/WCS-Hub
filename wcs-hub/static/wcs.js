@@ -2,28 +2,35 @@ angular.module('WCSHub', []).directive('checkbox', function() {
     return {
         templateUrl: '/static/checkbox.html',
         restrict: 'EA',
-        scope: {},
-        controller: function ($scope, $http, $attrs, $element, $parse) {
-            var target = $parse($attrs.ngModel);
-            if ($attrs.ngTitle) {
-                $scope.title = $parse($attrs.ngTitle)($scope.$parent);
-            }
-
-            $scope.checked = target($scope.$parent);
+        scope: {
+            title: "=ngTitle",
+            target: "=ngModel"
+        },
+        controller: function ($scope, $http, $attrs, $element) {
             if ($attrs.ngShow) {
                 $scope.$parent.$watch($attrs.ngShow, function(value) {
                     $element.css('display', !!value ? '' : 'none');
                 });
             }
             $scope.toggle = function() {
-                target.assign($scope.$parent, !$scope.checked);
+                $scope.target = !$scope.target;
             };
-            $scope.$parent.$watch($attrs.ngModel, function(new_val) {
-                $scope.checked = new_val;
-            });
         }
     }
 });
+
+function available_competitions() {
+    var f = {};
+    for (var i in this.competitions) {
+        for (var j in this.competitions[i]) {
+            if (this.competitions[i][j].show) {
+                f[i] = this.competitions[i];
+                break;
+            }
+        }
+    }
+    return f;
+}
 
 function empty_event() {
     var r = {};
@@ -50,23 +57,90 @@ function empty_event() {
             {name: 'Cabaret',  value: false, show: false}
         ]
     };
-    // TODO: other categories: Adv/allstar in J&J and strictly, routines: http://www.usopenswingdc.com/compete.html, pro-am
+    // TODO: other categories: Adv/allstar in J&J and strictly
     return r;
 }
 
+//// Controllers //////////////////////////////////////////////////////////
+
+function IndexCtrl($scope, $location, $http) {
+    $scope.events = [];
+
+    $http.get('/ajax/list_events/'
+    ).success(function(data) {
+        $scope.events = data;
+    }).error(function(data) {
+    });
+}
+
+
 function SignUpCtrl($scope, $location, $http) {
+    if (!$scope.event) {
+        $http.get('/ajax/event/?'+angular.toJson($location.path())
+        ).success(function(data) {
+            $scope.event = data;
+            $scope.event.competitions = angular.fromJson($scope.event.competitions);
+            $scope.event.available_competitions = available_competitions;
+        }).error(function(data) {
+        });
+    }
+    $scope.ok_to_register = function() {
+        if (!$scope.event) {
+            return false;
+        }
+        var comps = false;
+        var available_comps = $scope.event.available_competitions();
+        for (var i in available_comps) {
+            for (var j in available_comps[i]) {
+                if (available_comps[i][j].value) {
+                    comps = true;
+                    break;
+                }
+            }
+        }
+        return $scope.first_name && $scope.last_name && $scope.lead_follow && comps;
+    };
+    $scope.register = function() {
+        $http.post('/ajax/register/', {
+                event: angular.toJson($scope.event),
+                first_name: $scope.first_name,
+                last_name: $scope.last_name,
+                lead_follow: $scope.lead_follow
+            }
+        ).success(function(data){
+
+        }).error(function(data){
+
+        });
+    };
 }
 
 function CreateEventCtrl($scope, $location, $http) {
     $scope.event = empty_event();
+    $scope.is_sign_up_preview = true;
+    if ($location.path()) {
+        var state = angular.fromJson($location.path().slice(1));
+        $scope.event = state.event;
+    }
+    $scope.event.available_competitions = available_competitions;
 
     $scope.create = function() {
+        $http.post('/ajax/create_event/', {event: angular.toJson($scope.event)}
+        ).success(function(data){
 
+        }).error(function(data){
+
+        });
     };
+
+    function update_state() {
+        $location.path(angular.toJson({
+            event: $scope.event
+        }));
+    }
+
+    $scope.$watch('event', update_state, objectEquality=true);
 }
-
-//SignUpCtrl.prototype = Object.create(CreateEventCtrl.prototype);
-
 
 function FinalsCtrl($scope, $location, $http) {
     function empty_row() {
@@ -97,7 +171,7 @@ function FinalsCtrl($scope, $location, $http) {
             couples: $scope.couples,
             judges: $scope.judges
         }));
-        $http.get('/finals/?'+encodeURI(angular.toJson({couples: $scope.couples, judges: $scope.judges}))).success(function(data){
+        $http.get('/ajax/calculate_rp/?'+encodeURI(angular.toJson({couples: $scope.couples, judges: $scope.judges}))).success(function(data){
             data = angular.fromJson(data);
             $scope.tabulation = data.tabulation;
             $scope.scores = data.scores;
@@ -123,7 +197,9 @@ function FinalsCtrl($scope, $location, $http) {
 }
 
 $(document).ready(function() {
-    $('input')[0].focus();
+    if ($('input').length) {
+        $('input')[0].focus();
+    }
     $('.button').live('mousedown', function(){
         $(this).addClass('pushed');
     }).live('mouseup', function(){

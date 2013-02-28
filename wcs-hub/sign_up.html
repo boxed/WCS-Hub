@@ -7,13 +7,8 @@
         <script src="/static/wcs.js"></script>
         <link href="/static/style.css" rel="stylesheet"/>
     </head>
-    <body ng-controller="IndexCtrl" id="index_page">
-        <div class="container">
-            <h1>WCS-Hub</h1>
-
-            <div ng-repeat="event in events">
-                <a href="/sign_up/#/{{ event.id }}/">{{ event.name }}</a>
-            </div>
+    <body id="index_page">
+        <div class="container" ng-include="'/static/sign_up.html'">
         </div>
         <div id="footer">
             Powered by WCS-Hub. The source code is available on <a href="https://github.com/boxed/WCS-Hub">Github</a>.

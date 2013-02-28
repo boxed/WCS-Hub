@@ -9,16 +9,28 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 - url: /
+  login: required
   static_files: index.html
   upload: index.html
+- url: /finals/
+  login: required
+  static_files: finals.html
+  upload: finals.html
+- url: /sign_up/
+  login: required
+  static_files: sign_up.html
+  upload: sign_up.html
 - url: /create_event/
+  login: required
   static_files: create_event.html
   upload: create_event.html
 - url: /static/
+  login: required
   static_dir: static
 
 - url: .*
   script: main.app
+  login: required
 
 libraries:
 - name: webapp2
