@@ -35,6 +35,7 @@ function available_competitions() {
 function empty_event() {
     var r = {};
     r.name = '';
+    r.description = '';
     r.date = new Date();
     r.registration_opens = new Date();
     r.registration_closes = new Date();
@@ -108,9 +109,9 @@ function SignUpCtrl($scope, $location, $http) {
                 lead_follow: $scope.lead_follow
             }
         ).success(function(data){
-
+            $('.container').html('Thank you for registering!');
         }).error(function(data){
-
+            $scope.error = data;
         });
     };
 }
@@ -127,9 +128,9 @@ function CreateEventCtrl($scope, $location, $http) {
     $scope.create = function() {
         $http.post('/ajax/create_event/', {event: angular.toJson($scope.event)}
         ).success(function(data){
-
+            $('.container').html('Event created!');
         }).error(function(data){
-
+            $scope.error = data;
         });
     };
 
@@ -204,5 +205,11 @@ $(document).ready(function() {
         $(this).addClass('pushed');
     }).live('mouseup', function(){
         $(this).removeClass('pushed');
+    });
+    $('.menu li').each(function(i, item){
+        var a = $(item).children('a');
+        if (a && a.attr('href') == window.location.pathname) {
+            $(item).addClass('current');
+        }
     });
 });

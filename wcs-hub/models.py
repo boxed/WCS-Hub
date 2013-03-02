@@ -8,6 +8,7 @@ class DictModel(db.Model):
 class Event(DictModel):
     user = db.UserProperty(auto_current_user_add=True)
     name = db.StringProperty(required=True)
+    description = db.TextProperty()
     date = db.DateProperty()
     registration_opens = db.DateProperty()
     registration_closes = db.DateProperty()

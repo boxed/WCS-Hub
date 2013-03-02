@@ -37,6 +37,7 @@ class CreateEventView(webapp2.RequestHandler):
 
         Event(
             name=json['name'],
+            description=json['description'],
             date=parse_iso_date(json['date']),
             registration_opens=parse_iso_date(json['registration_opens']),
             registration_closes=parse_iso_date(json['registration_closes']),
@@ -66,6 +67,7 @@ class RegisterView(webapp2.RequestHandler):
             lead_follow=json['lead_follow'],
             competitions=JSONEncoder().encode([(comp, [div['name'] for div in divisions if div['value']]) for comp, divisions in json['event']['competitions'].items()]),
         ).put()
+        self.response.write('ok')
 
 app = webapp2.WSGIApplication([
     ('/ajax/calculate_rp/', CalculateRPView),

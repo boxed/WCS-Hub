@@ -8,8 +8,30 @@
         <link href="/static/style.css" rel="stylesheet"/>
     </head>
     <body ng-controller="IndexCtrl" id="index_page">
+        <div class="menu">
+            <a href="/" id="base">WCS-Hub</a>
+            <ul id="root_menu">
+                <li>
+                    <ul>
+                        <li><a href="/">Register for an event</a></li>
+                        <li><a href="/create_event/">Create event</a></li>
+                    </ul>
+                    <ul class="menu_heading"><li>Events</li></ul>
+                </li>
+
+                <li>
+                    <ul>
+                        <li><a href="https://github.com/boxed/WCS-Hub/">Source code</a></li>
+                        <li ><a href="http://kodare.net/blog/">Kodare.net blog</a></li>
+                    </ul>
+                    <ul class="menu_heading"><li>About WCS-Hub</li></ul>
+                </li>
+
+            </ul>
+        </div>
+
         <div class="container">
-            <h1>WCS-Hub</h1>
+            <h1>Register for an event</h1>
 
             <div ng-repeat="event in events">
                 <a href="/sign_up/#/{{ event.id }}/">{{ event.name }}</a>
