@@ -24,6 +24,14 @@ handlers:
   login: required
   static_files: create_event.html
   upload: create_event.html
+- url: /registrations/
+  login: required
+  static_files: registrations.html
+  upload: registration.html
+- url: /edit_event/
+  login: required
+  static_files: edit_event.html
+  upload: edit_event.html
 - url: /static/
   login: required
   static_dir: static

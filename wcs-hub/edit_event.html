@@ -1,7 +1,7 @@
 <!doctype html>
 <html ng-app="WCSHub">
     <head>
-        <title>Create event</title>
+        <title>Edit event</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
@@ -13,7 +13,7 @@
             });
         </script>
     </head>
-    <body ng-controller="CreateEventCtrl" >
+    <body ng-controller="EditEventCtrl" >
         <div class="menu">
             <a href="/" id="base">WCS-Hub</a>
             <ul id="root_menu">
@@ -48,7 +48,7 @@
             <div id="preview-contents" data-ng-include data-src src="'/static/sign_up.html'"></div>
         </div>
         <div class="container">
-            <h1>Create event</h1>
+            <h1>Edit event</h1>
 
             <table>
                 <tr><td><label for="name">Event name:</label></td><td><input id="name" ng-model="event.name" type="text" /></td></tr>
@@ -76,7 +76,7 @@
 
             <br />
 
-            <span class="button" ng-click="create()">Create</span>
+            <span class="button" ng-click="save()">Save</span>
 
             {{ errors }}
         </div>

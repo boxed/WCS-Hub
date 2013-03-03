@@ -7,7 +7,7 @@
         <script src="/static/wcs.js"></script>
         <link href="/static/style.css" rel="stylesheet"/>
     </head>
-    <body ng-controller="IndexCtrl" id="index_page">
+    <body ng-controller="RegistrationsCtrl" id="index_page">
         <div class="menu">
             <a href="/" id="base">WCS-Hub</a>
             <ul id="root_menu">
@@ -38,12 +38,25 @@
         </div>
 
         <div class="container">
-            <h1>Register for an event</h1>
+            <h1>Registrations for {{ event.name }}</h1>
 
-            <div ng-repeat="event in events">
-                <a href="/sign_up/#/{{ event.id }}/">{{ event.name }}</a>
-                <a href="/edit_event/#/{{ event.id }}/" ng-show="user == event.user">Edit</a>
-                <a href="/registrations/#/{{ event.id }}/" ng-show="user == event.user">Registrations</a>
+            <div ng-repeat="(comp_name, registrations) in comps">
+                <h3>{{ comp_name }}</h3>
+
+                <table class="tabular">
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Lead/follow</th>
+                        <th>E-mail</th>
+                    </tr>
+                    <tr ng-repeat="registration in registrations">
+                        <td>{{ registration.first_name }}</td>
+                        <td>{{ registration.last_name }}</td>
+                        <td>{{ registration.lead_follow }}</td>
+                        <td>{{ registration.user }}</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </body>

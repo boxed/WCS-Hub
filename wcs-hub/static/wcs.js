@@ -69,18 +69,48 @@ function IndexCtrl($scope, $location, $http) {
 
     $http.get('/ajax/list_events/'
     ).success(function(data) {
-        $scope.events = data;
+        $scope.events = data.events;
+        $scope.user = data.user;
     }).error(function(data) {
     });
 }
 
+function RegistrationsCtrl($scope, $location, $http) {
+    $scope.events = [];
+
+    $http.get('/ajax/registrations/?'+$location.path()
+        ).success(function(data) {
+            $scope.event = data.event;
+            $scope.user = data.user;
+            $scope.comps = data.comps;
+        }).error(function(data) {
+        });
+}
+
+function EditEventCtrl($scope, $location, $http) {
+    if (!$scope.event) {
+        $http.get('/ajax/event/?'+angular.toJson($location.path())
+            ).success(function(data) {
+                $scope.event = data;
+            }).error(function(data) {
+            });
+    }
+
+    $scope.save = function() {
+        $http.post('/ajax/edit_event/', {event: angular.toJson($scope.event)}
+        ).success(function(data){
+            $('.container').html('Event edited!');
+        }).error(function(data){
+            $scope.error = data;
+        });
+    };
+}
 
 function SignUpCtrl($scope, $location, $http) {
     if (!$scope.event) {
         $http.get('/ajax/event/?'+angular.toJson($location.path())
         ).success(function(data) {
             $scope.event = data;
-            $scope.event.competitions = angular.fromJson($scope.event.competitions);
             $scope.event.available_competitions = available_competitions;
         }).error(function(data) {
         });

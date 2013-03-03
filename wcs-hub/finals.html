@@ -67,8 +67,8 @@
             <div ng-repeat="error in errors">{{error}}</div>
 
             <div ng-hide="errors" ng-show="scores">
-                <div id="placement" ng-hide="errors">
-                    <table>
+                <div ng-hide="errors">
+                    <table class="tabular">
                         <thead>
                         <tr>
                             <th>Place</th>
@@ -107,9 +107,6 @@
                     <pre>{{ tabulation }}</pre>
                 </div>
             </div>
-        </div>
-        <div id="footer">
-            Powered by WCS-Hub. The source code is available on <a href="https://github.com/boxed/WCS-Hub">Github</a>.
         </div>
     </body>
 </html>
