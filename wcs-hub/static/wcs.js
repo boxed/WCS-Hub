@@ -1,4 +1,4 @@
-angular.module('WCSHub', []).
+angular.module('WCSHub', ['ui']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/finals/:state', {templateUrl: 'partials/finals.html', controller: FinalsCtrl}).
@@ -28,6 +28,10 @@ angular.module('WCSHub', []).
                     $scope.target = !$scope.target;
                 };
             }
+        }
+    }).value('ui.config', {
+        date: {
+            dateFormat: "yy-mm-dd"
         }
     });
 
@@ -106,6 +110,10 @@ function RegistrationsCtrl($scope, $http, $routeParams) {
             $scope.comps = data.comps;
         }).error(function(data) {
         });
+
+    $scope.has_registrations = function() {
+        return !$.isEmptyObject($scope.comps);
+    };
 }
 
 function event_has_chosen_comp($scope) {
@@ -172,7 +180,7 @@ function CreateEventCtrl($scope, $http, $routeParams) {
     $scope.is_sign_up_preview = true;
     $scope.event.available_competitions = available_competitions;
 
-    $scope.create = function() {
+    $scope.save = function() {
         $http.post('/ajax/create_event/', {event: angular.toJson($scope.event)}
             ).success(function(data){
                 $('.container').html('Event created!');

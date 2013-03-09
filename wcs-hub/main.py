@@ -5,12 +5,23 @@ from relative_placement import *
 from models import *
 import datetime
 from google.appengine.ext import db
+from google.appengine.api import users
+
+class WCSJSONEncoder(JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime.datetime):
+            return o.isoformat()
+        if isinstance(o, datetime.date):
+            return o.isoformat()
+        if isinstance(o, users.User):
+            return unicode(o)
+        return JSONEncoder.encode(self, o)
 
 def toJSON(obj):
-    return JSONEncoder().encode(obj).replace('"None"', '""')
+    return WCSJSONEncoder().encode(obj).replace('"None"', '""')
 
 def parse_iso_date(date):
-    return datetime.datetime.strptime(date.split(".")[0]+"UTC", "%Y-%m-%dT%H:%M:%S%Z").date()
+    return datetime.datetime.strptime(date.split(".")[0]+"T00:00:00", "%Y-%m-%dT%H:%M:%S").date()
 
 class CalculateRPView(webapp2.RequestHandler):
     def get(self):
@@ -33,13 +44,11 @@ class CalculateRPView(webapp2.RequestHandler):
             self.response.write(toJSON({'errors': e.errors}))
             self.response.status_int = 412
 
-class CreateEventView(webapp2.RequestHandler):
+class EditEventView(webapp2.RequestHandler):
     def post(self):
-        event = Event.get_by_id(int(self.request.POST.keys()[0][1:-1]))
-        assert users.get_current_user().email() == event.user.email()
-
         json = JSONDecoder().decode(JSONDecoder().decode(self.request.body)['event'])
-
+        event = Event.get_by_id(int(json['id']))
+        assert users.get_current_user().email() == event.user.email()
 
         event.name = json['name']
         event.description = json['description']
@@ -51,7 +60,7 @@ class CreateEventView(webapp2.RequestHandler):
         
         self.response.write('ok')
 
-class EditEventView(webapp2.RequestHandler):
+class CreateEventView(webapp2.RequestHandler):
     def post(self):
         json = JSONDecoder().decode(JSONDecoder().decode(self.request.body)['event'])
 
@@ -67,8 +76,9 @@ class EditEventView(webapp2.RequestHandler):
 
 class ListEventsView(webapp2.RequestHandler):
     def get(self):
+        now = datetime.datetime.now()
         result = {
-            'events': [x.to_dict() for x in Event.all()],
+            'events': [x.to_dict() for x in Event.all().filter('registration_opens <', now)],
             'user': users.get_current_user().email(),
         }
         self.response.write(toJSON(result))
@@ -76,6 +86,7 @@ class ListEventsView(webapp2.RequestHandler):
 class EventView(webapp2.RequestHandler):
     def get(self):
         event_id = int(self.request.GET.keys()[0])
+        # raise Exception(toJSON({'foo': Event.get_by_id(event_id).date}))
         self.response.write(toJSON(Event.get_by_id(event_id).to_dict()))
 
 class RegistrationsView(webapp2.RequestHandler):

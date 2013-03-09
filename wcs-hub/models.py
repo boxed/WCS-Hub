@@ -5,7 +5,7 @@ from json import JSONDecoder
 
 class DictModel(db.Model):
     def to_dict(self):
-        result = dict([(p, unicode(getattr(self, p))) for p in self.properties()]+[('id', unicode(self.key().id()))])
+        result = dict([(p, getattr(self, p)) for p in self.properties()]+[('id', unicode(self.key().id()))])
         if hasattr(self, 'JSON_fields'):
             decoder = JSONDecoder()
             for field in self.JSON_fields:

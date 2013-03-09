@@ -171,6 +171,9 @@ table td .button {
     text-decoration: none;
 }
 
+.ui-datepicker {
+    display: none;
+}
 
 /* menu */
 .menu #base

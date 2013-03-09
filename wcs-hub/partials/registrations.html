@@ -1,5 +1,7 @@
 <h1>Registrations for {{ event.name }}</h1>
 
+<div ng-hide="has_registrations()">No registrations yet</div>
+
 <div ng-repeat="(comp_name, registrations) in comps">
     <h3>{{ comp_name }}</h3>
 

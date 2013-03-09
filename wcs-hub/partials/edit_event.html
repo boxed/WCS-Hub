@@ -8,9 +8,9 @@
     <table>
         <tr><td><label for="name">Event name:</label></td><td><input id="name" ng-model="event.name" type="text" /></td></tr>
         <tr><td><label for="name">Description/extra information:</label></td><td><textarea id="name" ng-model="event.description" type="text"></textarea></td></tr>
-        <tr><td><label for="event_date">Event start date:</label></td><td><input id="event_date" class="datepicker" ng-model="event.date" ui-date /></td></tr>
-        <tr><td><label for="registration_opens">Registration opens:</label></td><td><input id="registration_opens" class="datepicker" ng-model="event.registration_opens" ui-date /></td></tr>
-        <tr><td><label for="registration_closes">Registration closes:</label></td><td><input id="registration_closes" class="datepicker" ng-model="event.registration_closes" ui-date /></td></tr>
+        <tr><td><label for="event_date">Event start date:</label></td><td><input id="event_date" class="datepicker" ng-model="event.date" ui-date ui-date-format="yy-mm-dd"/></td></tr>
+        <tr><td><label for="registration_opens">Registration opens:</label></td><td><input id="registration_opens" class="datepicker" ng-model="event.registration_opens" ui-date ui-date-format="yy-mm-dd"/></td></tr>
+        <tr><td><label for="registration_closes">Registration closes:</label></td><td><input id="registration_closes" class="datepicker" ng-model="event.registration_closes" ui-date ui-date-format="yy-mm-dd"/></td></tr>
     </table>
 
     <table>

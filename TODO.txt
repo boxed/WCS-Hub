@@ -1,13 +1,13 @@
 A complete WCS event system should have:
 - DONE: Register an event instance online
-    - Set up which competitions are available and the prices for the divisions
-        Live preview of what the sign up form will look like later, both the onsite and online versions?
-    - Publish/registration start date, registration end date
+    DONE: Set up which competitions are available and the prices for the divisions
+        DONE: Live preview of what the sign up form will look like later, both the onsite and online versions?
+    Publish/registration start date, registration end date
 - DONE: Register online for different comps
-- Event organizer edit events
-- Event organizer view registrations
+- DONE: Event organizer edit events
+- DONE: Event organizer view registrations
     - group access?
-- Register on site for different comps
+- DONE: Register on site for different comps
 	- Import from other sources?
 
 
