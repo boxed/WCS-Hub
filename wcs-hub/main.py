@@ -26,8 +26,8 @@ class CalculateRPView(webapp2.RequestHandler):
         try:
             scores = calculate_scores(couples)
             self.response.write(toJSON({
-                'tabulation': format_final_tabulation(scores),
-                'scores': [score[-1].__dict__ for score in scores],
+                'tabulation': format_final_tabulation(scores) if scores else '',
+                'scores': [score[-1].__dict__ for score in scores] if scores else [],
             }))
         except InvalidScoresError, e:
             self.response.write(toJSON({'errors': e.errors}))
@@ -75,12 +75,12 @@ class ListEventsView(webapp2.RequestHandler):
 
 class EventView(webapp2.RequestHandler):
     def get(self):
-        event_id = int(self.request.GET.keys()[0][2:-2])
+        event_id = int(self.request.GET.keys()[0])
         self.response.write(toJSON(Event.get_by_id(event_id).to_dict()))
 
 class RegistrationsView(webapp2.RequestHandler):
     def get(self):
-        event = Event.get_by_id(int(self.request.GET.keys()[0][1:-1]))
+        event = Event.get_by_id(int(self.request.GET.keys()[0]))
         assert users.get_current_user().email() == event.user.email()
         registrations = [x.to_dict() for x in db.query_descendants(event).run()]
         comps = {}

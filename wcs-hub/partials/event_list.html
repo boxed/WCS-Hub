@@ -1,0 +1,7 @@
+<h1>Register for an event</h1>
+
+<div ng-repeat="event in events">
+    <a href="/#/events/{{ event.id }}/sign_up">{{ event.name }}</a>
+    <a href="/#/events/{{ event.id }}/edit" ng-show="user == event.user">Edit</a>
+    <a href="/#/events/{{ event.id }}/registrations" ng-show="user == event.user">Registrations</a>
+</div>

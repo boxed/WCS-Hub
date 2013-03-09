@@ -1,0 +1,20 @@
+<h1>Registrations for {{ event.name }}</h1>
+
+<div ng-repeat="(comp_name, registrations) in comps">
+    <h3>{{ comp_name }}</h3>
+
+    <table class="tabular">
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Lead/follow</th>
+            <th>E-mail</th>
+        </tr>
+        <tr ng-repeat="registration in registrations">
+            <td>{{ registration.first_name }}</td>
+            <td>{{ registration.last_name }}</td>
+            <td>{{ registration.lead_follow }}</td>
+            <td>{{ registration.user }}</td>
+        </tr>
+    </table>
+</div>

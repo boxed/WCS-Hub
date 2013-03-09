@@ -33,13 +33,11 @@ table.tabular {
 .container {
     padding: 85px 15px 75px;
 }
-#footer {
-    padding: 15px;
-    height: 20px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    background: #e1d6e8;
+#finals_table td input {
+    width: 30px;
+}
+#finals_table td input.name {
+    width: 100px;
 }
 
 .button {
@@ -52,9 +50,16 @@ table.tabular {
     cursor: pointer;
     font-size: 80%;
 }
-
 .button.pushed {
     background: royalblue none;
+}
+.button.disabled {
+    cursor: default;
+    color: #b4b4b4;
+    border: 1px solid #e8e8e8;
+    background: transparent;
+}
+.button.disabled.pushed {
 }
 
 .checkbox .check {

@@ -1,4 +1,4 @@
-<div ng-controller="SignUpCtrl" id="signupctrl" ng-show="event">
+<div ng-show="event">
     <h1>Register to compete at {{ event.name }}</h1>
 
     <p>{{ event.description }}</p>
@@ -37,6 +37,7 @@
 
         <tr>
             <td>
+                <span class="button disabled" ng-hide="ok_to_register()">Register</span>
                 <span class="button" ng-show="ok_to_register()" ng-click="register()">Register</span>
             </td>
         </tr>
@@ -44,7 +45,6 @@
 
     {{ errors }}
 
-    <div ng-show="is_sign_up_preview" style="background-image: url('/static/images/striped_background.gif'); opacity: 0.1; width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
-
+    <div ng-show="is_sign_up_preview" style="background-image: url('/static/images/striped_background.gif'); opacity: 0.1; width: 100%; height: 100%; position: absolute; top: 0; left: 0; padding-bottom: 10px">
     </div>
 </div>
