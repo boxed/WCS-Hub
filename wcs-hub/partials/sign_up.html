@@ -1,4 +1,11 @@
-<div ng-show="event">
+<div ng-show="registration_complete">
+    Thank you for registering!
+
+    <p/>
+
+    <button class="button" ng-click="register_another()">Register another</button>
+</div>
+<div ng-show="event" ng-hide="registration_complete">
     <h1>Register to compete at {{ event.name }}</h1>
 
     <p>{{ event.description }}</p>
@@ -6,6 +13,11 @@
     <table>
         <tr>
             <td><label for="id_first_name">First name:</label></td><td><input id="id_first_name" ng-model="first_name" type="text"/></td>
+
+            <td ng-show="wsdc_search_result" rowspan="99">
+                Matching WSDC entries. Please select your number:
+                <div class="button" ng-repeat="result in wsdc_search_result" ng-click="choose_wsdc_number()">{{result.label}}</div>
+            </td>
         </tr>
         <tr>
             <td><label for="id_last_name">Last name:</label></td><td><input id="id_last_name" ng-model="last_name" type="text"/></td>
@@ -17,24 +29,35 @@
             </td>
         </tr>
 
-        <tr><td>&nbsp;</td></tr>
-
-        <tr>
-            <th ng-repeat="(group, competitions) in event.available_competitions()">
-                {{ group }}
-            </th>
-        </tr>
-
-        <tr>
-            <td ng-repeat="(group, competitions) in event.available_competitions()">
-                <span ng-repeat="comp in competitions" ng-show="comp.show">
-                    <span checkbox ng-title="comp.name" ng-model="comp.value"></span>
-                </span>
+        <tr ng-show="wsdc_number"><td>&nbsp;</td></tr>
+        <tr ng-show="wsdc_number">
+            <td colspan="2">
+                WSDC Number: {{ wsdc_number }}
             </td>
         </tr>
 
         <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td colspan="2">
+                <table>
+                    <tr>
+                        <th ng-repeat="(group, competitions) in event.available_competitions()">
+                            {{ group }}
+                        </th>
+                    </tr>
 
+                    <tr>
+                        <td ng-repeat="(group, competitions) in event.available_competitions()">
+                            <span ng-repeat="comp in competitions" ng-show="comp.show">
+                                <span checkbox ng-title="comp.name" ng-model="comp.value"></span>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td>&nbsp;</td></tr>
         <tr>
             <td>
                 <span class="button disabled" ng-hide="ok_to_register()">Register</span>

@@ -1,9 +1,11 @@
+'use strict';
+
 angular.module('WCSHub', ['ui']).
     config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/finals/:state', {templateUrl: 'partials/finals.html', controller: FinalsCtrl}).
             when('/finals', {templateUrl: 'partials/finals.html', controller: FinalsCtrl}).
-            when('/events', {templateUrl: 'partials/event_list.html', controller: EventListCtrl}).
+            when('/events', {templateUrl: 'partials/event_list.html', controller: ListEventsCtrl}).
             when('/events/create', {templateUrl: 'partials/edit_event.html', controller: CreateEventCtrl}).
             when('/events/:eventId/edit', {templateUrl: 'partials/edit_event.html', controller: EditEventCtrl}).
             when('/events/:eventId/sign_up', {templateUrl: 'partials/sign_up.html', controller: SignUpCtrl}).
@@ -61,7 +63,8 @@ function empty_event() {
             {name: 'Novice',       value: false, show: false},
             {name: 'Intermediate', value: false, show: false},
             {name: 'Advanced',     value: false, show: false},
-            {name: 'Allstar',      value: false, show: false}
+            {name: 'Allstar',      value: false, show: false},
+            {name: 'Masters',      value: false, show: false}
         ];
     }
     r.competitions = {
@@ -83,13 +86,14 @@ function empty_event() {
 function MenuCtrl($scope, $location) {
     $scope.getClass = function(path) {
         if ($location.path() == path) {
-            return "current"
+            return "current";
         } else {
-            return ""
+            return "";
         }
-    }}
+    }
+}
 
-function EventListCtrl($scope, $routeParams, $http) {
+function ListEventsCtrl($scope, $http) {
     $scope.events = [];
 
     $http.get('/ajax/list_events/'
@@ -97,6 +101,7 @@ function EventListCtrl($scope, $routeParams, $http) {
             $scope.events = data.events;
             $scope.user = data.user;
         }).error(function(data) {
+            $scope.error = data;
         });
 }
 
@@ -109,6 +114,7 @@ function RegistrationsCtrl($scope, $http, $routeParams) {
             $scope.user = data.user;
             $scope.comps = data.comps;
         }).error(function(data) {
+            $scope.error = data;
         });
 
     $scope.has_registrations = function() {
@@ -145,33 +151,59 @@ function has_chosen_comp($scope) {
 }
 
 function SignUpCtrl($scope, $http, $routeParams) {
-    if (!$scope.event) {
+    $scope.read_event = function() {
         $http.get('/ajax/event/?'+$routeParams.eventId
             ).success(function(data) {
                 $scope.event = data;
                 $scope.event.available_competitions = available_competitions;
             }).error(function(data) {
+                $scope.error = data;
             });
+    };
+    if (!$scope.event) {
+        $scope.read_event();
     }
+
     $scope.ok_to_register = function() {
         if (!$scope.event) {
             return false;
         }
-        return $scope.first_name !== '' && $scope.last_name !== ''  && $scope.lead_follow && has_chosen_comp($scope);
+        return $scope.first_name !== '' && $scope.last_name !== ''  && $scope.lead_follow !== '' && has_chosen_comp($scope);
     };
     $scope.register = function() {
         $http.post('/ajax/register/', {
                     event: angular.toJson($scope.event),
                     first_name: $scope.first_name,
                     last_name: $scope.last_name,
-                    lead_follow: $scope.lead_follow
+                    lead_follow: $scope.lead_follow,
+                    wsdc_number: $scope.wsdc_number
                 }
             ).success(function(data){
-                $('.container').html('Thank you for registering!');
+                $scope.registration_complete = true;
+                $scope.event = undefined;
+                $scope.first_name = '';
+                $scope.last_name = '';
+                $scope.lead_follow = undefined;
             }).error(function(data){
                 $scope.error = data;
             });
     };
+    $scope.register_another = function() {
+        $scope.registration_complete = false;
+        $scope.read_event();
+    };
+
+    $scope.choose_wsdc_number = function(){
+        $scope.wsdc_number = this.result.value;
+    };
+
+    $scope.$watch('lead_follow', function() {
+        if ($scope.lead_follow && $scope.first_name && $scope.last_name) {
+            $http.get('/ajax/search_wsdc/?'+encodeURIComponent($scope.last_name+','+$scope.first_name)).success(function(data){
+                $scope.wsdc_search_result = angular.fromJson(data);
+            });
+        }
+    }, true);
 }
 
 function CreateEventCtrl($scope, $http, $routeParams) {
@@ -202,7 +234,7 @@ function CreateEventCtrl($scope, $http, $routeParams) {
         return $scope.event.name !== '' && event_has_chosen_comp($scope);
     };
 
-    $scope.$watch('event', update_state, objectEquality=true);
+    $scope.$watch('event', update_state, true);
 }
 
 function EditEventCtrl($scope, $http, $routeParams) {
@@ -213,6 +245,7 @@ function EditEventCtrl($scope, $http, $routeParams) {
             ).success(function(data) {
                 $scope.event = data;
             }).error(function(data) {
+                $scope.error = data;
             });
     }
 
@@ -233,7 +266,7 @@ function EditEventCtrl($scope, $http, $routeParams) {
     };
 }
 
-function FinalsCtrl($scope, $http, $routeParams) {
+function FinalsCtrl($scope, $http) {
     function empty_row() {
         return {nr: '', leader: '', follower: '', scores: {}, chief_judge_score: ''};
     }
@@ -265,8 +298,8 @@ function FinalsCtrl($scope, $http, $routeParams) {
             });
     }
 
-    $scope.$watch('couples', update_state, objectEquality=true);
-    $scope.$watch('judges', update_state, objectEquality=true);
+    $scope.$watch('couples', update_state, true);
+    $scope.$watch('judges', update_state, true);
 
     $scope.addJudges = function() {
         $scope.judges.push($scope.judges.length+1);

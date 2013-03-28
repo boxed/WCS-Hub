@@ -1,0 +1,6 @@
+[submodule "wcs-hub/static/tests/doctestjs"]
+	path = wcs-hub/static/tests/doctestjs
+	url = git://github.com/ianb/doctestjs.git
+[submodule "wcs-hub/iso8601"]
+	path = wcs-hub/iso8601
+	url = git://github.com/boxed/iso8601

@@ -1,11 +1,27 @@
 #!/usr/bin/env python
+import httplib
 import webapp2
 from json import JSONDecoder, JSONEncoder
 from relative_placement import *
 from models import *
 import datetime
+import time
 from google.appengine.ext import db
 from google.appengine.api import users
+import unicodedata
+from iso8601 import iso8601
+import logging
+
+def get_date(s):
+    r = iso8601.parse(s)
+    if isinstance(r, datetime.datetime):
+        r = r.date()
+    assert isinstance(r, datetime.date)
+    return r
+
+def remove_diacretics(input_str):
+    nkfd_form = unicodedata.normalize('NFKD', unicode(input_str))
+    return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])
 
 class WCSJSONEncoder(JSONEncoder):
     def default(self, o):
@@ -19,9 +35,6 @@ class WCSJSONEncoder(JSONEncoder):
 
 def toJSON(obj):
     return WCSJSONEncoder().encode(obj).replace('"None"', '""')
-
-def parse_iso_date(date):
-    return datetime.datetime.strptime(date.split(".")[0]+"T00:00:00", "%Y-%m-%dT%H:%M:%S").date()
 
 class CalculateRPView(webapp2.RequestHandler):
     def get(self):
@@ -52,10 +65,10 @@ class EditEventView(webapp2.RequestHandler):
 
         event.name = json['name']
         event.description = json['description']
-        event.date = parse_iso_date(json['date'])
-        event.registration_opens = parse_iso_date(json['registration_opens'])
-        event.registration_closes = parse_iso_date(json['registration_closes'])
-        event.competitions = toJSON(json['competitions'])
+        event.date = get_date(json['date'])
+        event.registration_opens = get_date(json['registration_opens'])
+        event.registration_closes = get_date(json['registration_closes'])
+        event.competitions_json = toJSON(json['competitions'])
         event.put()
         
         self.response.write('ok')
@@ -64,21 +77,36 @@ class CreateEventView(webapp2.RequestHandler):
     def post(self):
         json = JSONDecoder().decode(JSONDecoder().decode(self.request.body)['event'])
 
+        logging.warn(json)
+
         Event(
             name=json['name'],
             description=json['description'],
-            date=parse_iso_date(json['date']),
-            registration_opens=parse_iso_date(json['registration_opens']),
-            registration_closes=parse_iso_date(json['registration_closes']),
-            competitions=toJSON(json['competitions']),
+            date=get_date(json['date']),
+            registration_opens=get_date(json['registration_opens']),
+            registration_closes=get_date(json['registration_closes']),
+            competitions_json=toJSON(json['competitions'])
             ).put()
         self.response.write('ok')
 
+class SearchWSDC(webapp2.RequestHandler):
+    def get(self):
+        conn = httplib.HTTPConnection('swingdancecouncil.heroku.com', timeout=4)
+        conn.request('GET', '/pages/dancer_search_by_fragment.json?term='+remove_diacretics(self.request.GET.keys()[0]))
+        res = conn.getresponse()
+        if res.status == 200:
+            data = res.read()
+            self.response.write(data)
+
 class ListEventsView(webapp2.RequestHandler):
     def get(self):
-        now = datetime.datetime.now()
+        today = datetime.datetime.now().date()
+        if '__get__all__' in self.request.GET:
+            available_events = [x.to_dict() for x in Event.all()]
+        else:
+            available_events = [x.to_dict() for x in Event.all().filter('registration_opens <', today) if x.registration_closes > today]
         result = {
-            'events': [x.to_dict() for x in Event.all().filter('registration_opens <', now)],
+            'events': available_events,
             'user': users.get_current_user().email(),
         }
         self.response.write(toJSON(result))
@@ -86,7 +114,6 @@ class ListEventsView(webapp2.RequestHandler):
 class EventView(webapp2.RequestHandler):
     def get(self):
         event_id = int(self.request.GET.keys()[0])
-        # raise Exception(toJSON({'foo': Event.get_by_id(event_id).date}))
         self.response.write(toJSON(Event.get_by_id(event_id).to_dict()))
 
 class RegistrationsView(webapp2.RequestHandler):
@@ -123,9 +150,28 @@ class RegisterView(webapp2.RequestHandler):
             first_name=json['first_name'],
             last_name=json['last_name'],
             lead_follow=json['lead_follow'],
-            competitions=toJSON([(comp, [div['name'] for div in divisions if div['value']]) for comp, divisions in json['event']['competitions'].items()]),
+            competitions_json=toJSON([(comp, [div['name'] for div in divisions if div['value']]) for comp, divisions in json['event']['competitions'].items()]),
         ).put()
         self.response.write('ok')
+
+class ResetDBView(webapp2.RequestHandler):
+    def bulk_del(self, model_name):
+        self.response.headers['Content-Type'] = 'text/plain'
+        while True:
+            q = db.GqlQuery('SELECT __key__ FROM %s' % model_name)
+            if not q.count():
+                break
+            db.delete(q.fetch(200))
+            time.sleep(0.5)
+
+    def post(self):
+        import os
+        if os.environ['SERVER_SOFTWARE'].startswith('Development'):
+            self.bulk_del('Event')
+            self.bulk_del('Registration')
+            self.response.write('ok')
+        else:
+            self.response.write('not a debug server')
 
 app = webapp2.WSGIApplication([
     ('/ajax/calculate_rp/', CalculateRPView),
@@ -135,4 +181,8 @@ app = webapp2.WSGIApplication([
     ('/ajax/event/', EventView),
     ('/ajax/register/', RegisterView),
     ('/ajax/registrations/', RegistrationsView),
+    ('/ajax/search_wsdc/', SearchWSDC),
+
+    ('/ajax/reset_db/', ResetDBView),
 ], debug=True)
+
