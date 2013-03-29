@@ -1,5 +1,3 @@
-- Tests
-
 A complete WCS event system should have:
 - DONE: Register an event instance online
     DONE: Set up which competitions are available and the prices for the divisions
@@ -20,5 +18,3 @@ A complete WCS event system should have:
 
 - Results display page
     - Different drill down based on event name, year, etc
-
-http://swingdancecouncil.heroku.com/pages/dancer_search_by_fragment.json?term=hovm

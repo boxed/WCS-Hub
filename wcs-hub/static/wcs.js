@@ -280,7 +280,7 @@ function FinalsCtrl($scope, $http) {
     $scope.showRP = false;
 
     function update_state(new_val, old_val) {
-        if ($scope.couples.slice(-1)[0].nr !== '') {
+        if ($scope.couples.slice(-1)[0].nr !== '' || $scope.couples.slice(-1)[0].leader !== '') {
             $scope.couples.push(empty_row());
         }
         if (angular.toJson($scope.couples.slice(-2)) === angular.toJson([empty_row(), empty_row()])) {
@@ -325,9 +325,11 @@ function update_menu(){
 }
 
 $(document).ready(function() {
-    if ($('input').length) {
-        $('input')[0].focus();
-    }
+    setTimeout(function(){
+        if ($('input').length) {
+            $('input')[0].focus();
+        }
+    }, 10);
     $('.button').live('mousedown', function(){
         $(this).addClass('pushed');
     }).live('mouseup', function(){
