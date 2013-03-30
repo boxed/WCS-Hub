@@ -215,7 +215,8 @@ function CreateEventCtrl($scope, $http, $routeParams) {
     $scope.save = function() {
         $http.post('/ajax/create_event/', {event: angular.toJson($scope.event)}
             ).success(function(data){
-                $('.container').html('Event created!');
+                $scope.event_updated_message = 'Event created!';
+                $scope.success_response = data;
             }).error(function(data){
                 $scope.error = data;
             });
@@ -259,7 +260,8 @@ function EditEventCtrl($scope, $http, $routeParams) {
     $scope.save = function() {
         $http.post('/ajax/edit_event/', {event: angular.toJson($scope.event)}
             ).success(function(data){
-                $('.container').html('Event edited!');
+                $scope.event_updated_message = 'Event edited!';
+                $scope.success_response = data;
             }).error(function(data){
                 $scope.error = data;
             });

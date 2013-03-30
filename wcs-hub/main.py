@@ -77,8 +77,6 @@ class CreateEventView(webapp2.RequestHandler):
     def post(self):
         json = JSONDecoder().decode(JSONDecoder().decode(self.request.body)['event'])
 
-        logging.warn(json)
-
         Event(
             name=json['name'],
             description=json['description'],

@@ -1,8 +1,11 @@
-<div id="preview" style="float: right">
+<div ng-show="event_updated_message">
+    {{ event_updated_message }}
+</div>
+<div id="preview" style="float: right" ng-hide="event_updated_message">
     <h1>Preview of sign up form</h1>
     <div id="preview-contents" data-ng-include data-src src="'/partials/sign_up.html'"></div>
 </div>
-<div>
+<div ng-hide="event_updated_message">
     <h1>{{title}}</h1>
 
     <table>
