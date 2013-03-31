@@ -281,7 +281,7 @@ function FinalsCtrl($scope, $http) {
     ];
     $scope.showRP = false;
 
-    function update_state(new_val, old_val) {
+    $scope.update_state = function() {
         if ($scope.couples.slice(-1)[0].nr !== '' || $scope.couples.slice(-1)[0].leader !== '') {
             $scope.couples.push(empty_row());
         }
@@ -295,13 +295,15 @@ function FinalsCtrl($scope, $http) {
                 $scope.scores = data.scores;
                 $scope.errors = null;
             }).error(function(data){
+                data = angular.fromJson(data);
                 $scope.errors = data.errors;
-                $scope.placement = null;
+                $scope.scores = null;
+                $scope.tabulation = null;
             });
     }
 
-    $scope.$watch('couples', update_state, true);
-    $scope.$watch('judges', update_state, true);
+    $scope.$watch('couples', $scope.update_state, true);
+    $scope.$watch('judges', $scope.update_state, true);
 
     $scope.addJudges = function() {
         $scope.judges.push($scope.judges.length+1);
@@ -312,18 +314,6 @@ function FinalsCtrl($scope, $http) {
         $scope.judges.pop();
         $scope.judges.pop();
     };
-}
-function update_menu(){
-    $('.menu li').each(function(i, item){
-        var a = $(item).children('a');
-        var foo = window.location.pathname;
-        if (window.location.hash.substring(1)) {
-            foo = '/#'+window.location.hash.substring(1);
-        }
-        if (a && a.attr('href') == foo) {
-            $(item).addClass('current');
-        }
-    });
 }
 
 $(document).ready(function() {
@@ -337,5 +327,4 @@ $(document).ready(function() {
     }).live('mouseup', function(){
         $(this).removeClass('pushed');
     });
-    update_menu();
 });

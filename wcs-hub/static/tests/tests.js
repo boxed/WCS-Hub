@@ -251,3 +251,81 @@ print(scope.comps);
     ]
 }
 */
+
+// = SECTION FinalsCtrl
+scope = create_controller(FinalsCtrl);
+print(scope.judges.length);
+// => 3
+scope.addJudges();
+scope.addJudges();
+print(scope.judges.length);
+// => 7
+scope.removeJudges();
+print(scope.judges.length);
+// => 5
+print(scope.couples.length);
+// => 1
+scope.couples[0] = {nr: '1', leader: 'A', follower: 'A', scores:{1: 1, 2: 1, 3: 3, 4: 2, 5: 3}, chief_judge_score: null}; // 1
+scope.couples[1] = {nr: '2', leader: 'B', follower: 'B', scores:{1: 6, 2: 5, 3: 4, 4: 1, 5: 2}, chief_judge_score: null}; // 4
+scope.couples[2] = {nr: '3', leader: 'C', follower: 'C', scores:{1: 2, 2: 4, 3: 1, 4: 5, 5: 5}, chief_judge_score: null}; // 3
+scope.couples[3] = {nr: '4', leader: 'D', follower: 'D', scores:{1: 4, 2: 2, 3: 5, 4: 6, 5: 6}, chief_judge_score: null}; // 6
+scope.couples[4] = {nr: '5', leader: 'E', follower: 'E', scores:{1: 5, 2: 6, 3: 2, 4: 3, 5: 4}, chief_judge_score: null}; // 5
+scope.couples[5] = {nr: '6', leader: 'F', follower: 'F', scores:{1: 3, 2: 3, 3: 6, 4: 4, 5: 1}, chief_judge_score: null}; // 2
+scope.tabulation = null;
+scope.errors = null;
+scope.update_state();
+wait(function(){return scope.tabulation || scope.errors;}, 10000);
+
+// = SECTION
+print(scope.errors);
+// => null
+print(scope.tabulation);
+/* =>
+ 0 (  0)  3 (  4)  5 ( 10)  5 ( 10)  5 ( 10)  |    1: A, A
+ 0 (  0)  0 (  0)  3 (  7)  4 ( 11)  4 ( 11)  |    6: F, F
+ 0 (  0)  0 (  0)  0 (  0)  3 (  7)  5 ( 17)  |    3: C, C
+ 0 (  0)  0 (  0)  0 (  0)  3 (  7)  4 ( 12)  |    2: B, B
+ 0 (  0)  0 (  0)  0 (  0)  3 (  9)  4 ( 14)  |    5: E, E
+ 0 (  0)  0 (  0)  0 (  0)  0 (  0)  3 ( 11)  |    4: D, D
+ */
+print(scope.scores);
+/* =>
+[
+    {
+        chief_judge_score: null,
+        judges_scores: [1, 1, 3, 2, 3],
+        name: {follower: "A", leader: "A", nr: "1"},
+        user_data: null
+    },
+    {
+        chief_judge_score: null,
+        judges_scores: [3, 3, 6, 4, 1],
+        name: {follower: "F", leader: "F", nr: "6"},
+        user_data: null
+    },
+    {
+        chief_judge_score: null,
+        judges_scores: [2, 4, 1, 5, 5],
+        name: {follower: "C", leader: "C", nr: "3"},
+        user_data: null
+    },
+    {
+        chief_judge_score: null,
+        judges_scores: [6, 5, 4, 1, 2],
+        name: {follower: "B", leader: "B", nr: "2"},
+        user_data: null
+    },
+    {
+        chief_judge_score: null,
+        judges_scores: [5, 6, 2, 3, 4],
+        name: {follower: "E", leader: "E", nr: "5"},
+        user_data: null
+    },
+    {
+        chief_judge_score: null,
+        judges_scores: [4, 2, 5, 6, 6],
+        name: {follower: "D", leader: "D", nr: "4"},
+        user_data: null
+    }
+]
+*/
