@@ -37,12 +37,12 @@ def toJSON(obj):
     return WCSJSONEncoder().encode(obj).replace('"None"', '""')
 
 class CalculateRPView(webapp2.RequestHandler):
-    def get(self):
-        json = JSONDecoder().decode(self.request.GET.keys()[0])
+    def post(self):
+        json = JSONDecoder().decode(self.request.body)
         judges = json['judges']
         couples = []
         for couple in json['couples']:
-            if couple['nr']:
+            if couple['nr'] or couple['leader'] or couple['follower']:
                 scores = [couple['scores'][str(judge)] if str(judge) in couple['scores'] else None for judge in judges]
                 scores = [int(x) if x else None for x in scores]
                 chief_judge_score = int(couple['chief_judge_score']) if couple['chief_judge_score'] else None

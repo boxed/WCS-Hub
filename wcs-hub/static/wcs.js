@@ -288,7 +288,8 @@ function FinalsCtrl($scope, $http) {
         if (angular.toJson($scope.couples.slice(-2)) === angular.toJson([empty_row(), empty_row()])) {
             $scope.couples.pop();
         }
-        $http.get('/ajax/calculate_rp/?'+encodeURI(angular.toJson({couples: $scope.couples, judges: $scope.judges}))
+        $http.post('/ajax/calculate_rp/',
+            angular.toJson({couples: $scope.couples, judges: $scope.judges})
             ).success(function(data){
                 data = angular.fromJson(data);
                 $scope.tabulation = data.tabulation;
@@ -300,10 +301,9 @@ function FinalsCtrl($scope, $http) {
                 $scope.scores = null;
                 $scope.tabulation = null;
             });
-    }
+    };
 
-    $scope.$watch('couples', $scope.update_state, true);
-    $scope.$watch('judges', $scope.update_state, true);
+    $scope.$watch(function(){return [$scope.couples, $scope.judges];}, $scope.update_state, true);
 
     $scope.addJudges = function() {
         $scope.judges.push($scope.judges.length+1);
