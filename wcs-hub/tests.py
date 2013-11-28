@@ -4,6 +4,8 @@ from relative_placement import *
 class Test(TestCase):
     def check_data(self, data):
         scores = calculate_scores(data)[:12] # We only care that the first 12 are correct, functionally the rest are split last place
+        for x in scores:
+            print x
         self.assertEquals([x[-1].user_data for x in scores], range(1, len(scores)+1))
 
     def test_CDS_2011_int_jj_finals(self):
@@ -91,11 +93,23 @@ class Test(TestCase):
 
     def test_from_greg_skinner(self):
         data = [
-            CoupleScoring('jason yvonne',   (4, 5, 4), 5, 4),
-            CoupleScoring('kyle sarah',     (5, 4, 5), 4, 5),
+            CoupleScoring('eric dora',      (2, 3, 1), 5, 1),
+            CoupleScoring('paul catriona',  (3, 1, 2), 4, 2),
             CoupleScoring('jordan tatiana', (1, 2, 3), 3, 3),
-            CoupleScoring('eric dora',      (2, 3, 1), 2, 2),
-            CoupleScoring('paul catriona',  (3, 1, 2), 1, 1),
+            CoupleScoring('jason yvonne',   (4, 5, 4), 2, 4),
+            CoupleScoring('kyle sarah',     (5, 4, 5), 1, 5),
+        ]
+        self.check_data(data)
+
+    def test_from_greg_skinner2_tie_break_showdown_before_chief_judge(self):
+        data = [
+            CoupleScoring('nick	katie',		    (2, 1, 3, 1, 2, 1, 2), 2, 1),
+            CoupleScoring('jason	yvonne',	(1, 2, 1, 2, 3, 2, 1), 1, 2),
+            CoupleScoring('jordan	tatiana',	(3, 3, 2, 3, 1, 3, 3), 3, 3),
+            CoupleScoring('benji	torri',		(4, 4, 4, 4, 4, 4, 4), 4, 4),
+            CoupleScoring('robert	nicola',	(5, 5, 5, 5, 5, 5, 5), 5, 5),
+            CoupleScoring('kyle	sarah',		    (6, 6, 6, 6, 6, 6, 6), 6, 6),
+            CoupleScoring('maxence	virginie',	(7, 7, 7, 7, 7, 7, 7), 7, 7),
         ]
         self.check_data(data)
 

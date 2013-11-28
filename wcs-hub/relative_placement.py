@@ -1,9 +1,11 @@
 from math import ceil
+from functools import total_ordering
 # Implementation of Swing Dance Council relative placement. The algorithm is described at http://www.swingdancecouncil.com/library/relativeplacement.htm
 # Comments starting with '###' are instructions directly from the document, hopefully they make it clear how the code relates to the document
 
 ### C. Tallying the Final Placements
 
+@total_ordering
 class CoupleScoring(object):
     def __init__(self, name, judges_scores, chief_judge_score, user_data=None):
         self.name, self.judges_scores, self.chief_judge_score, self.user_data = name, judges_scores, chief_judge_score, user_data
@@ -12,6 +14,16 @@ class CoupleScoring(object):
         if isinstance(self.name, dict):
             return '{nr:>3}: {leader}, {follower}'.format(**self.name)
         return str(self.name)
+
+    def __eq__(self, other):
+        return self.judges_scores == other.judges_scores
+
+    def ahead_count(self, other):
+        return sum([x < y for x, y in zip(self.judges_scores, other.judges_scores)])
+
+    def __lt__(self, other):
+        return self.ahead_count(other) < other.ahead_count(self)
+
 
 ### 1. In the finals, each Judge must place every couple in rank order (1st place, 2nd place, 3rd place, etc.).
 class InvalidScoresError(Exception):
@@ -59,7 +71,7 @@ def number_of_votes_and_sum(row, from_placement):
 
 def voting_tabulation(row, places):
     ### 6 continued:... If the sums for two or more couples are identical, then the next placement is added to the previous placements for those tied couples only.
-    return [number_of_votes_and_sum(row, x) for x in xrange(1, places)]+[1.0/row.chief_judge_score if row.chief_judge_score is not None else None]
+    return [number_of_votes_and_sum(row, x) for x in xrange(1, places)] + [row] + [1.0/row.chief_judge_score if row.chief_judge_score is not None else None]
 
 # couple ID, judge placements..., final placement
 def calculate_scores(data):
@@ -71,8 +83,8 @@ def calculate_scores(data):
 
     validate_scores(data)
 
-    final_result = sorted([(voting_tabulation(row, places), row) for row in data], reverse=True)
-    return final_result
+    data = [(voting_tabulation(row, places), row) for row in data]
+    return sorted(data, reverse=True)
 
 def format_final_tabulation(final_result):
     result = []
