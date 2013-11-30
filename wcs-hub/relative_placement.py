@@ -89,5 +89,5 @@ def calculate_scores(data):
 def format_final_tabulation(final_result):
     result = []
     for tabulation, couple_scoring in final_result:
-        result.append(''.join(['{:>3} ({:>3})'.format(*x) for x in tabulation[:-1]]).replace('-', ' ') + '  |  %s' % couple_scoring)
+        result.append(''.join(['{:>3} ({:>3})'.format(*x) for x in tabulation[:-1] if type(x) != CoupleScoring]).replace('-', ' ') + '  |  %s' % couple_scoring)
     return '\n'.join(result)
